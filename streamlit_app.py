@@ -2,12 +2,17 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
+import zipfile
 
-# Load model, scaler, dan label encoder
+# Ekstrak file model dari ZIP
+with zipfile.ZipFile("best_model_rf.zip", "r") as zip_ref:
+    zip_ref.extractall()  # Akan hasilkan best_model_rf.pkl
+
+# Load model
 with open("best_model_rf.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open("scaler.pkl", "rb") as f:
+with open("scaler (1).pkl", "rb") as f:
     scaler = pickle.load(f)
 
 with open("label_encoder.pkl", "rb") as f:
