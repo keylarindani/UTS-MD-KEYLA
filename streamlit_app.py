@@ -4,13 +4,14 @@ import numpy as np
 import pickle
 import zipfile
 
-# Ekstrak file model dari ZIP
+# Ekstrak ZIP terlebih dahulu
 with zipfile.ZipFile("best_model_rf.zip", "r") as zip_ref:
-    zip_ref.extractall()  # Akan hasilkan best_model_rf.pkl
+    zip_ref.extractall()
 
-# Load model
+# Baru load .pkl-nya
 with open("best_model_rf.pkl", "rb") as f:
     model = pickle.load(f)
+
 
 with open("scaler (1).pkl", "rb") as f:
     scaler = pickle.load(f)
