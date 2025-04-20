@@ -47,6 +47,24 @@ segment_map = {
     "Offline": 0, "Online": 1, "Corporate": 2, "Aviation": 3, "Complementary": 4
 }
 
+columns = [
+    'lead_time',
+    'no_of_adults',
+    'no_of_children',
+    'no_of_weekend_nights',
+    'no_of_week_nights',
+    'type_of_meal_plan',
+    'required_car_parking_space',
+    'room_type_reserved',
+    'market_segment_type',
+    'repeated_guest',
+    'no_of_previous_cancellations',
+    'no_of_previous_bookings_not_canceled',
+    'avg_price_per_room',
+    'no_of_special_requests'
+]
+
+
 input_df = pd.DataFrame([[
     lead_time,
     no_of_adults,
