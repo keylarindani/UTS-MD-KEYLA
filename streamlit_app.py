@@ -12,7 +12,7 @@ with zipfile.ZipFile("best_model_rf.zip", "r") as zip_ref:
 with open("best_model_rf.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open("scaler.pkl", "rb") as f:
+with open("scaler (1).pkl", "rb") as f:
     scaler = pickle.load(f)
 
 st.title("Prediksi Pembatalan Booking Hotel")
