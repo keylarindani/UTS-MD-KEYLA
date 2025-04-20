@@ -47,6 +47,7 @@ segment_map = {
     "Offline": 0, "Online": 1, "Corporate": 2, "Aviation": 3, "Complementary": 4
 }
 
+# Definisikan kolom agar sesuai dengan scaler
 columns = [
     'lead_time',
     'no_of_adults',
@@ -64,23 +65,15 @@ columns = [
     'no_of_special_requests'
 ]
 
-
+# Lalu bikin input_df pakai ini
 input_df = pd.DataFrame([[
-    lead_time,
-    no_of_adults,
-    no_of_children,
-    no_of_weekend_nights,
-    no_of_week_nights,
-    meal_map[meal_plan],
-    parking,
-    room_map[room_type],
-    segment_map[market_segment],
-    repeated_guest,
-    cancel_before,
-    success_before,
-    price,
-    special_request
+    lead_time, no_of_adults, no_of_children,
+    no_of_weekend_nights, no_of_week_nights,
+    meal_map[meal_plan], parking, room_map[room_type],
+    segment_map[market_segment], repeated_guest,
+    cancel_before, success_before, price, special_request
 ]], columns=columns)
+
 
 
 # Scaling
