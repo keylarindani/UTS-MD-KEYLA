@@ -47,7 +47,6 @@ segment_map = {
     "Offline": 0, "Online": 1, "Corporate": 2, "Aviation": 3, "Complementary": 4
 }
 
-# Data input jadi DataFrame
 input_df = pd.DataFrame([[
     lead_time,
     no_of_adults,
@@ -63,7 +62,8 @@ input_df = pd.DataFrame([[
     success_before,
     price,
     special_request
-]])
+]], columns=columns)
+
 
 # Scaling
 input_scaled = scaler.transform(input_df)
