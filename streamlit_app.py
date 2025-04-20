@@ -4,24 +4,20 @@ import numpy as np
 import pickle
 import zipfile
 
-# Ekstrak ZIP terlebih dahulu
+# Ekstrak model dari ZIP
 with zipfile.ZipFile("best_model_rf.zip", "r") as zip_ref:
     zip_ref.extractall()
 
-# Baru load .pkl-nya
+# Load model dan scaler
 with open("best_model_rf.pkl", "rb") as f:
     model = pickle.load(f)
 
-
-with open("scaler (1).pkl", "rb") as f:
+with open("scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
-
-with open("label_encoder.pkl", "rb") as f:
-    label_encoder = pickle.load(f)
 
 st.title("Prediksi Pembatalan Booking Hotel")
 
-# Form input user
+# Input user
 lead_time = st.number_input("Lead Time (hari)", min_value=0)
 no_of_adults = st.number_input("Jumlah Dewasa", min_value=0)
 no_of_children = st.number_input("Jumlah Anak", min_value=0)
@@ -37,7 +33,7 @@ success_before = st.number_input("Booking Sukses Sebelumnya", min_value=0)
 price = st.number_input("Harga Rata-Rata Kamar", min_value=0.0)
 special_request = st.number_input("Jumlah Permintaan Khusus", min_value=0)
 
-# Encode input
+# Mapping categorical
 meal_map = {"Meal Plan 1": 0, "Meal Plan 2": 1, "Meal Plan 3": 2, "Not Selected": 3}
 room_map = {
     "Room_Type 1": 0, "Room_Type 2": 1, "Room_Type 3": 2,
@@ -47,25 +43,17 @@ segment_map = {
     "Offline": 0, "Online": 1, "Corporate": 2, "Aviation": 3, "Complementary": 4
 }
 
-# Definisikan kolom agar sesuai dengan scaler
+# Pastikan nama kolom sesuai saat training
 columns = [
-    'lead_time',
-    'no_of_adults',
-    'no_of_children',
-    'no_of_weekend_nights',
-    'no_of_week_nights',
-    'type_of_meal_plan',
-    'required_car_parking_space',
-    'room_type_reserved',
-    'market_segment_type',
-    'repeated_guest',
-    'no_of_previous_cancellations',
-    'no_of_previous_bookings_not_canceled',
-    'avg_price_per_room',
-    'no_of_special_requests'
+    'lead_time', 'no_of_adults', 'no_of_children',
+    'no_of_weekend_nights', 'no_of_week_nights',
+    'type_of_meal_plan', 'required_car_parking_space',
+    'room_type_reserved', 'market_segment_type', 'repeated_guest',
+    'no_of_previous_cancellations', 'no_of_previous_bookings_not_canceled',
+    'avg_price_per_room', 'no_of_special_requests'
 ]
 
-# Lalu bikin input_df pakai ini
+# Buat DataFrame input
 input_df = pd.DataFrame([[
     lead_time, no_of_adults, no_of_children,
     no_of_weekend_nights, no_of_week_nights,
@@ -74,15 +62,16 @@ input_df = pd.DataFrame([[
     cancel_before, success_before, price, special_request
 ]], columns=columns)
 
-
+# Urutkan ulang kolom sesuai fitur scaler
+input_df = input_df[scaler.feature_names_in_]
 
 # Scaling
 input_scaled = scaler.transform(input_df)
 
-# Prediksi dan output
+# Prediksi
 if st.button("Prediksi"):
-    pred = model.predict(input_scaled)[0]
-    if pred == 1:
-        st.error("❌ Booking kemungkinan akan DIBATALKAN")
+    result = model.predict(input_scaled)[0]
+    if result == 1:
+        st.error("❌ Booking kemungkinan AKAN DIBATALKAN.")
     else:
-        st.success("✅ Booking kemungkinan TIDAK dibatalkan")
+        st.success("✅ Booking kemungkinan TIDAK dibatalkan.")
